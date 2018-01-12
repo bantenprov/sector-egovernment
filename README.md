@@ -1,2 +1,2 @@
-# sector-egovernment
-10 sector E-Government
+# Sector E-Government
+10 Sectors in Indonsian's E-Government
