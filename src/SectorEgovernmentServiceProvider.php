@@ -154,7 +154,7 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageMigrationsPath => database_path('migrations')
-        ], 'sector-egovernment-migrations');
+        ], 'migrations');
     }
 
     public function publicHandle()

@@ -138,34 +138,30 @@ class SectorEgovernmentController extends Controller
     {
         $sector_egovernment = SectorEgovernment::findOrFail($id);
 
-        if($request->get('old_label') == $request->get('label'))
+        if ($request->get('old_label') == $request->get('label'))
         {
             $validator = Validator::make($request->all(), [
                 'label' => 'required|max:16',
                 'description' => 'max:255',
             ]);
 
-        }else{
+        } else {
             $validator = Validator::make($request->all(), [
                 'label' => 'required|max:16|unique:sector_egovernments,label',
                 'description' => 'max:255',
             ]);
         }
 
-
-        if($validator->fails()){
+        if ($validator->fails()){
             $response['message'] = 'Failed, label ' . $request->label . ' already exists';
-        }else{
+        } else {
             $response['message'] = 'success';
             $sector_egovernment->label = $request->get('label');
             $sector_egovernment->description = $request->get('description');
             $sector_egovernment->save();
         }
 
-
-
         $response['status'] = true;
-
 
         return response()->json($response);
     }
@@ -189,4 +185,3 @@ class SectorEgovernmentController extends Controller
         return json_encode($response);
     }
 }
-
