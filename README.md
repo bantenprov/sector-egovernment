@@ -94,7 +94,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
   {
     path: '/dashboard/sector-egovernment',
     components: {
-      main: resolve => require(['./components/views/bantenprov/sector-egovernment/DashboardSectorGovernment.vue'], resolve),
+      main: resolve => require(['./components/views/bantenprov/sector-egovernment/DashboardSectorEgovernment.vue'], resolve),
       navbar: resolve => require(['./components/Navbar.vue'], resolve),
       sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
     },
@@ -118,7 +118,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Sector Government"
+                title: "Sector Egovernment"
             }
         },
         {
@@ -129,7 +129,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Add Sector Government"
+                title: "Add Sector Egovernment"
             }
         },
         {
@@ -140,7 +140,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "View Sector Government"
+                title: "View Sector Egovernment"
             }
         },
         {
@@ -151,7 +151,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Edit Sector Government"
+                title: "Edit Sector Egovernment"
             }
         },
         //== ...
@@ -170,14 +170,14 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
 
     	//===
         {
-          name: 'Sector Government',
+          name: 'Sector Egovernment',
           link: '/dashboard/sector-egovernment',
           icon: 'fa fa-angle-double-right'
         }
 
         //== ...
         {
-            name: 'Sector Government',
+            name: 'Sector Egovernment',
             link: '/admin/sector-egovernment',
             icon: 'fa fa-angle-double-right'
         },
@@ -189,38 +189,38 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
 
 ~~~javasript
 
-import SectorGovernment from './components/bantenprov/sector-government/SectorGovernment.chart.vue';
-Vue.component('echarts-sector-government', SectorGovernment);
+import SectorEgovernment from './components/bantenprov/sector-egovernment/SectorEgovernment.chart.vue';
+Vue.component('echarts-sector-egovernment', SectorEgovernment);
 
-import SectorGovernmentKota from './components/bantenprov/sector-government/SectorGovernmentKota.chart.vue';
-Vue.component('echarts-sector-government-kota', SectorGovernmentKota);
+import SectorEgovernmentKota from './components/bantenprov/sector-egovernment/SectorEgovernmentKota.chart.vue';
+Vue.component('echarts-sector-egovernment-kota', SectorEgovernmentKota);
 
-import SectorGovernmentTahun from './components/bantenprov/sector-government/SectorGovernmentTahun.chart.vue';
-Vue.component('echarts-sector-government-tahun', SectorGovernmentTahun);
+import SectorEgovernmentTahun from './components/bantenprov/sector-egovernment/SectorEgovernmentTahun.chart.vue';
+Vue.component('echarts-sector-egovernment-tahun', SectorEgovernmentTahun);
 
-import SectorGovernmentAdminShow from './components/bantenprov/sector-government/SectorGovernmentAdmin.show.vue';
-Vue.component('admin-view-sector-government-tahun', SectorGovernmentAdminShow);
+import SectorEgovernmentAdminShow from './components/bantenprov/sector-egovernment/SectorEgovernmentAdmin.show.vue';
+Vue.component('admin-view-sector-egovernment-tahun', SectorEgovernmentAdminShow);
 
 //== Echarts Angka Partisipasi Kasar
 
-import SectorGovernmentBar01 from './components/views/bantenprov/sector-government/SectorGovernmentBar01.vue';
-Vue.component('sector-government-bar-01', SectorGovernmentBar01);
+import SectorEgovernmentBar01 from './components/views/bantenprov/sector-egovernment/SectorEgovernmentBar01.vue';
+Vue.component('sector-egovernment-bar-01', SectorEgovernmentBar01);
 
-import SectorGovernmentBar02 from './components/views/bantenprov/sector-government/SectorGovernmentBar02.vue';
-Vue.component('sector-government-bar-02', SectorGovernmentBar02);
+import SectorEgovernmentBar02 from './components/views/bantenprov/sector-egovernment/SectorEgovernmentBar02.vue';
+Vue.component('sector-egovernment-bar-02', SectorEgovernmentBar02);
 
 //== mini bar charts
-import SectorGovernmentBar03 from './components/views/bantenprov/sector-government/SectorGovernmentBar03.vue';
-Vue.component('sector-government-bar-03', SectorGovernmentBar03);
+import SectorEgovernmentBar03 from './components/views/bantenprov/sector-egovernment/SectorEgovernmentBar03.vue';
+Vue.component('sector-egovernment-bar-03', SectorEgovernmentBar03);
 
-import SectorGovernmentPie01 from './components/views/bantenprov/sector-government/SectorGovernmentPie01.vue';
-Vue.component('sector-government-pie-01', SectorGovernmentPie01);
+import SectorEgovernmentPie01 from './components/views/bantenprov/sector-egovernment/SectorEgovernmentPie01.vue';
+Vue.component('sector-egovernment-pie-01', SectorEgovernmentPie01);
 
-import SectorGovernmentPie02 from './components/views/bantenprov/sector-government/SectorGovernmentPie02.vue';
-Vue.component('sector-government-pie-02', SectorGovernmentPie02);
+import SectorEgovernmentPie02 from './components/views/bantenprov/sector-egovernment/SectorEgovernmentPie02.vue';
+Vue.component('sector-egovernment-pie-02', SectorEgovernmentPie02);
 
 //== mini pie charts
-import SectorGovernmentPie03 from './components/views/bantenprov/sector-government/SectorGovernmentPie03.vue';
-Vue.component('sector-government-pie-03', SectorGovernmentPie03);
+import SectorEgovernmentPie03 from './components/views/bantenprov/sector-egovernment/SectorEgovernmentPie03.vue';
+Vue.component('sector-egovernment-pie-03', SectorEgovernmentPie03);
 
 ~~~
