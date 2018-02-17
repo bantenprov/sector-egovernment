@@ -25,7 +25,7 @@
         <div class="card h-100" style="color: #fff; background-color: #009688;">
           <div class="card-header">
             <i class="fa fa-bar-chart" aria-hidden="true"></i>
-            Sector Egoverment by Categories
+            Anggaran dan Penyereapan Berdasarkan OPD
           </div>
           <div class="card-body">
             <sector-egovernment-bar-01></sector-egovernment-bar-01>
@@ -36,7 +36,7 @@
         <div class="card h-100" style="color: #fff; background-color: #FF9800;">
           <div class="card-header">
             <i class="fa fa-pie-chart" aria-hidden="true"></i>
-            Sector Egoverment by Categories
+            Anggaran dan Penyereapan Berdasarkan OPD
           </div>
           <div class="card-body">
             <sector-egovernment-pie-01></sector-egovernment-pie-01>
@@ -52,7 +52,7 @@
         <div class="card h-100" style="color: #fff; background-color: #F44336;">
           <div class="card-header">
             <i class="fa fa-pie-chart" aria-hidden="true"></i>
-            Sector Egoverment by Year
+            Anggaran dan penyerapan per bulan tiap OPD
           </div>
           <div class="card-body">
             <sector-egovernment-pie-02></sector-egovernment-pie-02>
@@ -63,7 +63,7 @@
         <div class="card text-white bg-dark h-100">
           <div class="card-header">
             <i class="fa fa-bar-chart" aria-hidden="true"></i>
-            Sector Egoverment by Year
+            Anggaran dan penyerapan per bulan tiap OPD
           </div>
           <div class="card-body">
             <sector-egovernment-bar-02></sector-egovernment-bar-02>

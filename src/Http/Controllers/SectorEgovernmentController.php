@@ -55,14 +55,14 @@ class SectorEgovernmentController extends Controller
     public function show($id)
     {
 
-        $sector_egovernment = $this->sector-egovernment->find($id);
+        $sector_egovernment = $this->sector_egovernment->find($id);
 
         return response()->json([
-            'negara'    => $sector-egovernment->negara,
-            'province'  => $sector-egovernment->getProvince->name,
-            'regencies' => $sector-egovernment->getRegency->name,
-            'tahun'     => $sector-egovernment->tahun,
-            'data'      => $sector-egovernment->data
+            'negara'    => $sector_egovernment->negara,
+            'province'  => $sector_egovernment->getProvince->name,
+            'regencies' => $sector_egovernment->getRegency->name,
+            'tahun'     => $sector_egovernment->tahun,
+            'data'      => $sector_egovernment->data
         ]);
     }
 
@@ -88,7 +88,7 @@ class SectorEgovernmentController extends Controller
             ]);
         }
 
-        $check = $this->sector-egovernment->where('regency_id',$request->regency_id)->where('tahun',$request->tahun)->count();
+        $check = $this->sector_egovernment->where('regency_id',$request->regency_id)->where('tahun',$request->tahun)->count();
 
         if($check > 0)
         {
@@ -99,7 +99,7 @@ class SectorEgovernmentController extends Controller
             ]);
 
         }else{
-            $data = $this->sector-egovernment->create($request->all());
+            $data = $this->sector_egovernment->create($request->all());
 
             return response()->json([
                     'type'      => 'success',

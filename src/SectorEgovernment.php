@@ -1,4 +1,5 @@
-<?php namespace Bantenprov\SectorEgovernment;
+<?php
+namespace Bantenprov\SectorEgovernment;
 
 /**
  * The SectorEgovernment class.

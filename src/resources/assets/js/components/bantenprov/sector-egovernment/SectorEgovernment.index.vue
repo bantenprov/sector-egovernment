@@ -56,7 +56,7 @@ export default {
                 html: false,
             }, {
                 label: 'Kategori',
-                field: 'get_category.name',
+                field: 'get_opd.name',
                 numeric: true,
                 html: false,
             }, {

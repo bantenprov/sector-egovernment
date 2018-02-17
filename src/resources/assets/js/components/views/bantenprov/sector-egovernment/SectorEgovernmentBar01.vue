@@ -58,7 +58,7 @@ export default {
           data: [],
           axisLabel: {
             show: true,
-            fontSize: 8,
+            fontSize: 10,
             fontWeight: 'normal',
             fontStyle: 'normal',
             color: '#fff'
@@ -90,7 +90,7 @@ export default {
           show: true,
           axisLabel: {
             show: true,
-            fontSize: 8,
+            fontSize: 10,
             fontWeight: 'normal',
             fontStyle: 'normal',
             color: '#fff'
@@ -131,7 +131,7 @@ export default {
         label: {
           show: true,
           position: 'top',
-          fontSize: 8,
+          fontSize: 10,
           fontWeight: 'normal',
           fontStyle: 'normal',
           color: '#fff'

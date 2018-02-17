@@ -43,6 +43,20 @@ $ git clone https://github.com/bantenprov/sector-egovernment.git
 
 ```
 
+
+#### Lakukan publish assets :
+
+```bash
+$ php artisan vendor:publish --tag=sector-egovernment-assets
+```
+
+#### Lakukan publish json file :
+
+```bash
+$ php artisan vendor:publish --tag=sector-egovernment-public
+```
+
+
 #### Lakukan migrate :
 
 ```bash
@@ -75,6 +89,21 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
 #### Tambahkan route di dalam file : `resources/assets/js/routes.js` :
 
 ```javascript
+
+
+  {
+    path: '/dashboard/sector-egovernment',
+    components: {
+      main: resolve => require(['./components/views/bantenprov/sector-egovernment/DashboardSectorGovernment.vue'], resolve),
+      navbar: resolve => require(['./components/Navbar.vue'], resolve),
+      sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
+    },
+    meta: {
+      title: "Sector Egoverment"
+    }
+  }
+
+//==
 {
     path: '/admin',
     redirect: '/admin/dashboard/home',
@@ -138,6 +167,14 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
     icon: 'fa fa-lock',
     childType: 'collapse',
     childItem: [
+
+    	//===
+        {
+          name: 'Sector Government',
+          link: '/dashboard/sector-egovernment',
+          icon: 'fa fa-angle-double-right'
+        }
+
         //== ...
         {
             name: 'Sector Government',
@@ -147,3 +184,43 @@ $ php artisan vendor:publish --tag=sector-egovernment-assets
         //== ...
     ]
 },
+
+#### Tambahkan components resources/assets/js/components.js :
+
+~~~javasript
+
+import SectorGovernment from './components/bantenprov/sector-government/SectorGovernment.chart.vue';
+Vue.component('echarts-sector-government', SectorGovernment);
+
+import SectorGovernmentKota from './components/bantenprov/sector-government/SectorGovernmentKota.chart.vue';
+Vue.component('echarts-sector-government-kota', SectorGovernmentKota);
+
+import SectorGovernmentTahun from './components/bantenprov/sector-government/SectorGovernmentTahun.chart.vue';
+Vue.component('echarts-sector-government-tahun', SectorGovernmentTahun);
+
+import SectorGovernmentAdminShow from './components/bantenprov/sector-government/SectorGovernmentAdmin.show.vue';
+Vue.component('admin-view-sector-government-tahun', SectorGovernmentAdminShow);
+
+//== Echarts Angka Partisipasi Kasar
+
+import SectorGovernmentBar01 from './components/views/bantenprov/sector-government/SectorGovernmentBar01.vue';
+Vue.component('sector-government-bar-01', SectorGovernmentBar01);
+
+import SectorGovernmentBar02 from './components/views/bantenprov/sector-government/SectorGovernmentBar02.vue';
+Vue.component('sector-government-bar-02', SectorGovernmentBar02);
+
+//== mini bar charts
+import SectorGovernmentBar03 from './components/views/bantenprov/sector-government/SectorGovernmentBar03.vue';
+Vue.component('sector-government-bar-03', SectorGovernmentBar03);
+
+import SectorGovernmentPie01 from './components/views/bantenprov/sector-government/SectorGovernmentPie01.vue';
+Vue.component('sector-government-pie-01', SectorGovernmentPie01);
+
+import SectorGovernmentPie02 from './components/views/bantenprov/sector-government/SectorGovernmentPie02.vue';
+Vue.component('sector-government-pie-02', SectorGovernmentPie02);
+
+//== mini pie charts
+import SectorGovernmentPie03 from './components/views/bantenprov/sector-government/SectorGovernmentPie03.vue';
+Vue.component('sector-government-pie-03', SectorGovernmentPie03);
+
+~~~

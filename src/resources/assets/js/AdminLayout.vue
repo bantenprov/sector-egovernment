@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <dashboard-navbar></dashboard-navbar>
     <div class="row no-gutters">
@@ -9,7 +10,6 @@
         <router-view></router-view>
       </div><!-- /col -->
     </div><!-- /.row -->
-
-    
   </div>
+
 </template>

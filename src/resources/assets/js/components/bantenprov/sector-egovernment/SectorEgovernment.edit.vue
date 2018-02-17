@@ -25,12 +25,12 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <validate tag="div">
-                                        <label for="category_id"> Kategori</label>
-                                        <select v-model="model.category_id" name="category_id" required autofocus class="form-control">
+                                        <label for="opd_id"> Kategori</label>
+                                        <select v-model="model.opd_id" name="opd_id" required autofocus class="form-control">
                                           <option disabled value="">Please select one</option>
-                                          <option v-for="datacategory in category" v-bind:key="datacategory.id" :value="datacategory.id">{{datacategory.name}}</option>
+                                          <option v-for="dataopd in opd" v-bind:key="dataopd.id" :value="dataopd.id">{{dataopd.name}}</option>
                                         </select>
-                                        <field-messages name="category_id" show="$invalid && $submitted" class="text-danger">
+                                        <field-messages name="opd_id" show="$invalid && $submitted" class="text-danger">
                                             <div slot="required">Kategori Harus diisi</div>
                                         </field-messages>
                                     </validate>
@@ -94,12 +94,12 @@ export default {
     name: "edit_epormas",
     data() {
         return {
-            category: [],
+            opd: [],
             city: [],
             formstate: {},
             model: {
                 tanggal: "",
-                category_id: "",
+                opd_id: "",
                 city_id: "",
                 count: ""
             },
@@ -114,7 +114,7 @@ export default {
               var id = this.$route.params.id;
               axios.put("/update/epormas/"+id, {
                   tanggal: this.model.tanggal,
-                  category_id: this.model.category_id,
+                  opd_id: this.model.opd_id,
                   city_id: this.model.city_id,
                   count: this.model.count
               })
@@ -134,7 +134,7 @@ export default {
             axios.get("/epormas/"+id+"/edit").then(response => {
                     this.model = {
                         tanggal: response.data.tanggal,
-                        category_id: response.data.result.category_id,
+                        opd_id: response.data.result.opd_id,
                         city_id: response.data.result.city_id,
                         count: response.data.result.count
                     }
@@ -148,11 +148,11 @@ export default {
     mounted: function() {
         var id = this.$route.params.id;
         axios.get("/epormas/"+id+"/edit").then(response => {
-                this.category = response.data.category;
+                this.opd = response.data.opd;
                 this.city = response.data.city;
                 this.model = {
                     tanggal: response.data.tanggal,
-                    category_id: response.data.result.category_id,
+                    opd_id: response.data.result.opd_id,
                     city_id: response.data.result.city_id,
                     count: response.data.result.count
                 }

@@ -80,7 +80,7 @@ export default {
           },
           label: {
             show: true,
-            fontSize: 8,
+            fontSize: 9,
             fontWeight: 'normal',
             fontStyle: 'normal',
             color: '#fff'
@@ -111,7 +111,7 @@ export default {
       var res = response.data;
 
       this.pie.series[0].data = res[0].series[0].data;
-      this.pie.title.text = res[0].xAxis.region + ' ' + res[0].xAxis.name + ' ' + res[0].xAxis.category;
+      this.pie.title.text = res[0].xAxis.region + ' ' + res[0].xAxis.name + ' ' + res[0].xAxis.opd;
 
       // interval
       let i = 0;
@@ -119,7 +119,7 @@ export default {
       setInterval(() => {
 
         this.pie.series[0].data = res[i].series[0].data;
-        this.pie.title.text = res[i].xAxis.region + ' ' + res[i].xAxis.name + ' ' + res[i].xAxis.category;
+        this.pie.title.text = res[i].xAxis.region + ' ' + res[i].xAxis.name + ' ' + res[i].xAxis.opd;
 
         i++;
 

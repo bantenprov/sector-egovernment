@@ -1,8 +1,8 @@
 <?php
 
-if (! function_exists('existsSectorEgovernment')) {
-    function existsSectorEgovernment()
+if (! function_exists('checkSectorEgovernment')) {
+    function checkSectorEgovernment()
     {
-        return 'Welcome to function existsSectorEgovernment() for Bantenprov\SectorEgovernment package';
+        return 'Welcome to function checkSectorEgovernment() for Bantenprov\SectorEgovernment package';
     }
 }

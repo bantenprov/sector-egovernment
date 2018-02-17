@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\SectorEgovernment;
+<?php
+
+namespace Bantenprov\SectorEgovernment;
 
 use Illuminate\Support\ServiceProvider;
 use Bantenprov\SectorEgovernment\Console\Commands\SectorEgovernmentCommand;
