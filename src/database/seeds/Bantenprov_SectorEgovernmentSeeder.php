@@ -13,46 +13,61 @@ class Bantenprov_SectorEgovernmentSeeder extends Seeder
      */
 	public function run()
 	{
-		Model::unguard();
+        Model::unguard();
 
-        $sector_egovernment = SectorEgovernment::updateOrCreate(
-            [
-                'label' => 'G2G',
+        $sector_egovernments = (object) [
+            (object) [
+                'label' => 'Sektor Sarana dan Prasarana',
+                'description' => '',
             ],
-            [
-                'description' => 'Goverment to Goverment',
-            ]
-        );
-        $sector_egovernment->save();
+            (object) [
+                'label' => 'Sektor Pemerintahan',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Pembangunan',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Pelayanan',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Legislatif',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Kewilayahan',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Keuangan',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Kepegawaian',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Kemasyarakatan',
+                'description' => '',
+            ],
+            (object) [
+                'label' => 'Sektor Administrasi dan Manajemen',
+                'description' => '',
+            ],
+        ];
 
-        $sector_egovernment = SectorEgovernment::updateOrCreate(
-            [
-                'label' => 'G2E',
-            ],
-            [
-                'description' => 'Goverment to Employee',
-            ]
-        );
-        $sector_egovernment->save();
-
-        $sector_egovernment = SectorEgovernment::updateOrCreate(
-            [
-                'label' => 'G2C',
-            ],
-            [
-                'description' => 'Goverment to Citizen',
-            ]
-        );
-        $sector_egovernment->save();
-
-        $sector_egovernment = SectorEgovernment::updateOrCreate(
-            [
-                'label' => 'G2B',
-            ],
-            [
-                'description' => 'Goverment to Business',
-            ]
-        );
-        $sector_egovernment->save();
+        foreach ($sector_egovernments as $sector_egovernment) {
+            $model = SectorEgovernment::updateOrCreate(
+                [
+                    'label' => $sector_egovernment->label,
+                ],
+                [
+                    'description' => $sector_egovernment->description,
+                ]
+            );
+            $model->save();
+        }
 	}
 }
