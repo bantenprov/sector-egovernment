@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => 'api/sector-egovernment', 'middleware' => ['web']], function() {
+Route::sector(['prefix' => 'api/sector-egovernment', 'middleware' => ['web']], function() {
     $controllers = (object) [
         'index'     => 'Bantenprov\SectorEgovernment\Http\Controllers\SectorEgovernmentController@index',
         'create'    => 'Bantenprov\SectorEgovernment\Http\Controllers\SectorEgovernmentController@create',

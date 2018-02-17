@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i> Sector Egovernment
+      <i class="fa fa-table" aria-hidden="true"></i> Sector Government
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -36,7 +36,7 @@
         @vuetable:loading="onLoading"
         @vuetable:loaded="onLoaded">
         <template slot="actions" slot-scope="props">
-          <div class="btn-group pull-right" role="group" style="display:flex;">
+          <div class="btn-sector pull-right" role="sector" style="display:flex;">
             <!--<button class="btn btn-info btn-sm" role="button" @click="viewRow(props.rowData)">
               <span class="fa fa-eye"></span>
             </button>-->
@@ -120,7 +120,7 @@ export default {
           descendingIcon: 'fa fa-chevron-down'
         },
         pagination: {
-          wrapperClass: 'vuetable-pagination btn-group',
+          wrapperClass: 'vuetable-pagination btn-sector',
           activeClass: 'active',
           disabledClass: 'disabled',
           pageClass: 'btn btn-light',
