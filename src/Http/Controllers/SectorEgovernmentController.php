@@ -1,16 +1,16 @@
-<?php namespace Bantenprov\SectorEgovernment\Http\Controllers;
+<?php
 
-/* require */
+namespace Bantenprov\SectorEgovernment\Http\Controllers;
+
+/* Require */
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Bantenprov\SectorEgovernment\Facades\SectorEgovernment;
+use Bantenprov\BudgetAbsorption\Facades\SectorEgovernmentFacade;
 
 /* Models */
-use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment as PdrbModel;
-use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\Province;
-use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\Regency;
+use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
 
-/* etc */
+/* Etc */
 use Validator;
 
 /**
@@ -21,107 +21,199 @@ use Validator;
  */
 class SectorEgovernmentController extends Controller
 {
-
-    protected $province;
-
-    protected $regency;
-
-    protected $sector_egovernment;
-
-    public function __construct(Regency $regency, Province $province, PdrbModel $sector_egovernment)
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(SectorEgovernment $sector_egovernment)
     {
-        $this->regency  = $regency;
-        $this->province = $province;
-        $this->sector_egovernment     = $sector_egovernment;
+        $this->sector_egovernment = $sector_egovernment;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        /* todo : return json */
+        if (request()->has('sort')) {
+            list($sortCol, $sortDir) = explode('|', request()->sort);
 
-        return 'index';
+            $query = $this->sector_egovernment->orderBy($sortCol, $sortDir);
+        } else {
+            $query = $this->sector_egovernment->orderBy('id', 'asc');
+        }
 
+        if ($request->exists('filter')) {
+            $query->where(function($q) use($request) {
+                $value = "%{$request->filter}%";
+                $q->where('label', 'like', $value)
+                    ->orWhere('description', 'like', $value);
+            });
+        }
+
+        $perPage = request()->has('per_page') ? (int) request()->per_page : null;
+        $response = $query->paginate($perPage);
+
+        return response()->json($response)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET');
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
+        $sector_egovernment = $this->sector_egovernment;
 
-        return response()->json([
-            'provinces' => $this->province->all(),
-            'regencies' => $this->regency->all()
-        ]);
+        $response['sector_egovernment'] = $sector_egovernment;
+        $response['status'] = true;
+
+        return response()->json($sector_egovernment);
     }
 
-    public function show($id)
-    {
-
-        $sector_egovernment = $this->sector_egovernment->find($id);
-
-        return response()->json([
-            'negara'    => $sector_egovernment->negara,
-            'province'  => $sector_egovernment->getProvince->name,
-            'regencies' => $sector_egovernment->getRegency->name,
-            'tahun'     => $sector_egovernment->tahun,
-            'data'      => $sector_egovernment->data
-        ]);
-    }
-
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\SectorEgovernment  $sector_egovernment
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
+        $sector_egovernment = $this->sector_egovernment;
 
-        $validator = Validator::make($request->all(),[
-            'negara'        => 'required',
-            'province_id'   => 'required',
-            'regency_id'    => 'required',
-            'kab_kota'      => 'required',
-            'tahun'         => 'required|integer',
-            'data'          => 'required|integer',
+        $validator = Validator::make($request->all(), [
+            'label' => 'required|max:16|unique:sector_egovernments,label',
+            'description' => 'max:255',
         ]);
 
-        if($validator->fails())
-        {
-            return response()->json([
-                'title'     => 'error',
-                'message'   => 'add failed',
-                'type'      => 'failed',
-                'errors'    => $validator->errors()
-            ]);
+        if($validator->fails()){
+            $check = $sector_egovernment->where('label',$request->label)->whereNull('deleted_at')->count();
+
+            if ($check > 0) {
+                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
+            } else {
+                $sector_egovernment->label = $request->input('label');
+                $sector_egovernment->description = $request->input('description');
+                $sector_egovernment->save();
+
+                $response['message'] = 'success';
+            }
+        } else {
+            $sector_egovernment->label = $request->input('label');
+            $sector_egovernment->description = $request->input('description');
+            $sector_egovernment->save();
+
+            $response['message'] = 'success';
         }
 
-        $check = $this->sector_egovernment->where('regency_id',$request->regency_id)->where('tahun',$request->tahun)->count();
+        $response['status'] = true;
 
-        if($check > 0)
-        {
-            return response()->json([
-                'title'         => 'error',
-                'message'       => 'Data allready exist',
-                'type'          => 'failed',
-            ]);
-
-        }else{
-            $data = $this->sector_egovernment->create($request->all());
-
-            return response()->json([
-                    'type'      => 'success',
-                    'title'     => 'success',
-                    'id'      => $data->id,
-                    'message'   => 'PDRB '. $this->regency->find($request->regency_id)->name .' tahun '. $request->tahun .' successfully created',
-                ]);
-        }
-
+        return response()->json($response);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $sector_egovernment = $this->sector_egovernment->findOrFail($id);
+
+        $response['sector_egovernment'] = $sector_egovernment;
+        $response['status'] = true;
+
+        return response()->json($response);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\SectorEgovernment  $sector_egovernment
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $sector_egovernment = $this->sector_egovernment->findOrFail($id);
+
+        $response['sector_egovernment'] = $sector_egovernment;
+        $response['status'] = true;
+
+        return response()->json($response);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\SectorEgovernment  $sector_egovernment
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
-        /* todo : return json */
-        return '';
+        $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
+        if ($request->input('old_label') == $request->input('label'))
+        {
+            $validator = Validator::make($request->all(), [
+                'label' => 'required|max:16',
+                'description' => 'max:255',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'label' => 'required|max:16|unique:sector_egovernments,label',
+                'description' => 'max:255',
+            ]);
+        }
+
+        if ($validator->fails()) {
+            $check = $sector_egovernment->where('label',$request->label)->whereNull('deleted_at')->count();
+
+            if ($check > 0) {
+                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
+            } else {
+                $sector_egovernment->label = $request->input('label');
+                $sector_egovernment->description = $request->input('description');
+                $sector_egovernment->save();
+
+                $response['message'] = 'success';
+            }
+        } else {
+            $sector_egovernment->label = $request->input('label');
+            $sector_egovernment->description = $request->input('description');
+            $sector_egovernment->save();
+
+            $response['message'] = 'success';
+        }
+
+        $response['status'] = true;
+
+        return response()->json($response);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\SectorEgovernment  $sector_egovernment
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        /* todo : return json */
-        return '';
+        $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
+        if ($sector_egovernment->delete()) {
+            $response['status'] = true;
+        } else {
+            $response['status'] = false;
+        }
+
+        return json_encode($response);
     }
 }

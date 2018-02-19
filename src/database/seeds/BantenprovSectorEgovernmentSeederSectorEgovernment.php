@@ -1,10 +1,13 @@
 <?php
 
-use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
+/* Require */
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class Bantenprov_SectorEgovernmentSeeder_SectorEgovernment extends Seeder
+/* Models */
+use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
+
+class BantenprovSectorEgovernmentSeederSectorEgovernment extends Seeder
 {
     /**
      * Run the database seeds.

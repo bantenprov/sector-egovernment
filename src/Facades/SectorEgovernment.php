@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\SectorEgovernment\Facades;
+<?php
+
+namespace Bantenprov\SectorEgovernment\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @package Bantenprov\SectorEgovernment
  * @author  bantenprov <developer.bantenprov@gmail.com>
  */
-class SectorEgovernment extends Facade
+class SectorEgovernmentFacade extends Facade
 {
     /**
      * Get the registered name of the component.

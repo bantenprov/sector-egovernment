@@ -13,7 +13,6 @@ use Bantenprov\SectorEgovernment\Console\Commands\SectorEgovernmentCommand;
  */
 class SectorEgovernmentServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -28,7 +27,6 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Bootstrap handles
         $this->routeHandle();
         $this->configHandle();
         $this->langHandle();
@@ -36,6 +34,7 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
         $this->assetHandle();
         $this->migrationHandle();
         $this->publicHandle();
+        $this->seedHandle();
     }
 
     /**
@@ -70,16 +69,6 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
     }
 
     /**
-     * Loading package routes
-     *
-     * @return void
-     */
-    protected function routeHandle()
-    {
-        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
-    }
-
-    /**
      * Loading and publishing package's config
      *
      * @return void
@@ -93,7 +82,17 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageConfigPath => $appConfigPath,
-        ], 'config');
+        ], 'sector-egovernment-config');
+    }
+
+    /**
+     * Loading package routes
+     *
+     * @return void
+     */
+    protected function routeHandle()
+    {
+        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
     }
 
     /**
@@ -109,7 +108,7 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageTranslationsPath => resource_path('lang/vendor/sector-egovernment'),
-        ], 'lang');
+        ], 'sector-egovernment-lang');
     }
 
     /**
@@ -125,7 +124,7 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageViewsPath => resource_path('views/vendor/sector-egovernment'),
-        ], 'views');
+        ], 'sector-egovernment-views');
     }
 
     /**
@@ -155,7 +154,7 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageMigrationsPath => database_path('migrations')
-        ], 'migrations');
+        ], 'sector-egovernment-migrations');
     }
 
     public function publicHandle()
@@ -165,5 +164,14 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
         $this->publishes([
             $packagePublicPath => base_path('public')
         ], 'sector-egovernment-public');
+    }
+
+    public function seedHandle()
+    {
+        $packageSeedPath = __DIR__.'/database/seeds';
+
+        $this->publishes([
+            $packageSeedPath => base_path('database/seeds')
+        ], 'sector-egovernment-seeds');
     }
 }

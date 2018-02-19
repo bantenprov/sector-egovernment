@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\SectorEgovernment\Contracts;
+<?php
+
+namespace Bantenprov\SectorEgovernment\Contracts;
 
 /**
  * The SectorEgovernmentAbstract class

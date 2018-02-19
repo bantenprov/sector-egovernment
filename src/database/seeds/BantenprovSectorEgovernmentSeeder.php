@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class Bantenprov_SectorEgovernmentSeeder extends Seeder
+class BantenprovSectorEgovernmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class Bantenprov_SectorEgovernmentSeeder extends Seeder
      */
     public function run()
     {
-         $this->call(Bantenprov_SectorEgovernmentSeeder_SectorEgovernment::class);
+         $this->call(BantenprovSectorEgovernmentSeederSectorEgovernment::class);
     }
 }
