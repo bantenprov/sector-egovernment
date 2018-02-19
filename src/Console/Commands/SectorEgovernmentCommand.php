@@ -16,7 +16,7 @@ class SectorEgovernmentCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'bantenprov:sector-egovernment';
+    protected $signature = 'bantenprov:sector-egoverment';
 
     /**
      * The console command description.

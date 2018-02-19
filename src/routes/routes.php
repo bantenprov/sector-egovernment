@@ -19,4 +19,3 @@ Route::group(['prefix' => 'sector-egovernment', 'middleware' => ['web']], functi
     Route::post('/{id}/delete',$controllers->destroy)->name('sector-egovernment.destroy');
 
 });
-

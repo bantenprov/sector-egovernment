@@ -149,7 +149,7 @@ export default {
       let app = this;
 
       if (confirm('Do you really want to delete it?')) {
-        axios.delete('/api/sector-egovernment/' + rowData.id) 
+        axios.delete('/api/sector-egovernment/' + rowData.id)
           .then(function(response) {
             if (response.data.status == true) {
               app.$refs.vuetable.reload()
