@@ -1,105 +1,198 @@
-
 <template>
-  <div>
-        <div class="col-md-12 col-lg-9 dashboard-main">
-        <!-- ===================================================================== --> 
-            <b-card header="Table PDRB Harga Dasar" header-tag="h4" class="bg-primary-card">
-                <div class="table-responsive">
-                    <datatable title="Data Jumlah PDRB Harga Dasar" :rows="tableData" :columns="columndata"></datatable>
-                </div>
-            </b-card> 
-        <!-- ===================================================================== -->
-        
-      </div><!-- /col -->
-    </div><!-- /.row --> 
-</template> 
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-table" aria-hidden="true"></i> Sector Government
 
+      <ul class="nav nav-pills card-header-pills pull-right">
+        <li class="nav-item">
+          <button class="btn btn-primary btn-sm" role="button" @click="createRow">
+          	<i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <vuetable-filter-bar></vuetable-filter-bar>
+      </div>
+
+      <div style="margin:20px 0;">
+        <div v-if="loading" class="d-flex justify-content-start align-items-center">
+          <i class="fa fa-refresh fa-spin fa-fw"></i>
+          <span>Loading...</span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <vuetable ref="vuetable"
+          api-url="/api/sector-egovernment"
+          :fields="fields"
+          :sort-order="sortOrder"
+          :css="css.table"
+          pagination-path=""
+          :per-page="5"
+          :append-params="moreParams"
+          @vuetable:pagination-data="onPaginationData"
+          @vuetable:loading="onLoading"
+          @vuetable:loaded="onLoaded">
+          <template slot="actions" slot-scope="props">
+            <div class="btn-sector pull-right" role="sector" style="display:flex;">
+              <!--<button class="btn btn-info btn-sm" role="button" @click="viewRow(props.rowData)">
+                <span class="fa fa-eye"></span>
+              </button>-->
+              <button class="btn btn-warning btn-sm" role="button" @click="editRow(props.rowData)">
+                <span class="fa fa-pencil"></span>
+              </button>
+              <button class="btn btn-danger btn-sm" role="button" @click="deleteRow(props.rowData)">
+                <span class="fa fa-trash"></span>
+              </button>
+            </div>
+          </template>
+        </vuetable>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <vuetable-pagination-info ref="paginationInfo"
+        ></vuetable-pagination-info>
+        <vuetable-pagination ref="pagination"
+          :css="css.pagination"
+          @vuetable-pagination:change-page="onChangePage">
+        </vuetable-pagination>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+.vuetable-th-sequence{
+  width: 1px;
+}
+.vuetable-th-slot-actions {
+  width: 1px;
+  white-space: normal;
+}
+</style>
 
 <script>
-import Vue from 'vue';
-import {
-    ClientTable,
-    Event
-} from 'vue-tables-2'; 
-import datatable from "./SectorEgovernmentTable.vue";
-Vue.use(ClientTable, {}, false);
+import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo';
 
-//import miniToastr from 'mini-toastr';
-//miniToastr.init();
 export default {
-    name: "PDRB Harga Dasar_list",
-    components: {
-        datatable
-    },
-    data() {
-        return {
-            tableData: [],
-            columndata: [{
-                label: 'ID',
-                field: 'id',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'Tahun',
-                field: 'tahun',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'Tanggal',
-                field: 'tanggal',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'Jumlah',
-                field: 'count',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'Kategori',
-                field: 'get_opd.name',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'Kota',
-                field: 'get_city.name',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'User',
-                field: 'user_id',
-                numeric: false,
-                html: false,
-            }, {
-                label: 'Via',
-                field: 'via',
-                numeric: false,
-                html: false,
-            }, {
-                label: 'Created',
-                field: 'created_at',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'Updated',
-                field: 'updated_at',
-                numeric: true,
-                html: false,
-            }, {
-                label: 'Actions',
-                field: 'action',
-                numeric: false,
-                html: true,
-            }]
+  components: {
+    VuetablePaginationInfo
+  },
+  data() {
+    return {
+      loading: true,
+      fields: [
+        {
+          name: '__sequence',
+          title: '#',
+          titleClass: 'center aligned',
+          dataClass: 'right aligned'
+        },
+        {
+          name: 'label',
+          title: 'Label',
+          sortField: 'label',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'description',
+          title: 'Description',
+          sortField: 'description',
+          titleClass: 'center aligned'
+        },
+        {
+          name: '__slot:actions',
+          title: 'Actions',
+          titleClass: 'center aligned',
+          dataClass: 'center aligned'
+        },
+      ],
+      sortOrder: [{
+        field: 'label',
+        direction: 'asc'
+      }],
+      moreParams: {},
+      css: {
+        table: {
+          tableClass: 'table table-hover',
+          ascendingIcon: 'fa fa-chevron-up',
+          descendingIcon: 'fa fa-chevron-down'
+        },
+        pagination: {
+          wrapperClass: 'vuetable-pagination btn-sector',
+          activeClass: 'active',
+          disabledClass: 'disabled',
+          pageClass: 'btn btn-light',
+          linkClass: 'btn btn-light',
+          icons: {
+            first: 'fa fa-angle-double-left',
+            prev: 'fa fa-angle-left',
+            next: 'fa fa-angle-right',
+            last: 'fa fa-angle-double-right'
+          }
         }
-    },
-    mounted() {
-        axios.get("/PDRB Harga Dasar").then(response => {
-            this.tableData = response.data.result;
-            this.tableData.forEach((item, index) => {
-                this.$set(item, "action", "<a class='btn btn-warning btn-sm' href='#/PDRB Harga Dasar/" + item.id + "/edit'><i class='leftmenu_icon ti-pencil-alt' class='icon'></i> Edit</a> <a class='btn btn-danger btn-sm' onclick='return confirm(\"Are Youu Sure?\")' href='#/PDRB Harga Dasar/" + item.id + "/destroy'><i class='leftmenu_icon ti-close' class='icon'></i> Delete</a>");
-            });
-        })
-        .catch(function(error) {miniToastr.error(error, "Error")});
+      }
     }
+  },
+  methods: {
+    createRow() {
+      window.location = '#/admin/sector-egovernment/create';
+    },
+    viewRow(rowData) {
+      window.location = '#/admin/sector-egovernment/' + rowData.id;
+    },
+    editRow(rowData) {
+      window.location = '#/admin/sector-egovernment/' + rowData.id + '/edit';
+    },
+    deleteRow(rowData) {
+      let app = this;
+
+      if (confirm('Do you really want to delete it?')) {
+        axios.delete('/api/sector-egovernment/' + rowData.id)
+          .then(function(response) {
+            if (response.data.status == true) {
+              app.$refs.vuetable.reload()
+            } else {
+              alert('Failed');
+            }
+          })
+          .catch(function(response) {
+            alert('Break');
+          });
+      }
+    },
+    onPaginationData(paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData);
+      this.$refs.paginationInfo.setPaginationData(paginationData);
+    },
+    onChangePage(page) {
+      this.$refs.vuetable.changePage(page);
+    },
+    onLoading: function() {
+      this.loading = true;
+    },
+    onLoaded: function() {
+      this.loading = false;
+    }
+  },
+  events: {
+    'filter-set' (filterText) {
+      this.moreParams = {
+        filter: filterText
+      }
+
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    'filter-reset'() {
+      this.moreParams = {
+        //
+      }
+
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    }
+  }
 }
 </script>

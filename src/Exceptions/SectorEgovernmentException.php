@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\SectorEgovernment\Exceptions;
+<?php
+
+namespace Bantenprov\SectorEgovernment\Exceptions;
 
 use Exception;
 

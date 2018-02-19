@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\SectorEgovernment\Http\Middleware;
+<?php
+
+namespace Bantenprov\SectorEgovernment\Http\Middleware;
 
 use Closure;
 
@@ -10,7 +12,6 @@ use Closure;
  */
 class SectorEgovernmentMiddleware
 {
-
     /**
      * Handle an incoming request.
      *

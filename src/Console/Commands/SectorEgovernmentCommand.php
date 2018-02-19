@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\SectorEgovernment\Console\Commands;
+<?php
+
+namespace Bantenprov\SectorEgovernment\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -10,13 +12,12 @@ use Illuminate\Console\Command;
  */
 class SectorEgovernmentCommand extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'bantenprov:sector-egovernment';
+    protected $signature = 'bantenprov:sector-egoverment';
 
     /**
      * The console command description.
