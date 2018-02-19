@@ -1,6 +1,4 @@
-<?php
-
-namespace Bantenprov\SectorEgovernment\Facades;
+<?php namespace Bantenprov\SectorEgovernment\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

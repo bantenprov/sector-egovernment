@@ -1,10 +1,16 @@
-<?php
+<?php namespace Bantenprov\SectorEgovernment\Http\Controllers;
 
-namespace Bantenprov\SectorEgovernment\Http\Controllers;
-
-use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
+/* require */
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Bantenprov\SectorEgovernment\Facades\SectorEgovernment;
+
+/* Models */
+use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment as PdrbModel;
+use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\Province;
+use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\Regency;
+
+/* etc */
 use Validator;
 
 /**
@@ -15,173 +21,107 @@ use Validator;
  */
 class SectorEgovernmentController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+
+    protected $province;
+
+    protected $regency;
+
+    protected $sector_egovernment;
+
+    public function __construct(Regency $regency, Province $province, PdrbModel $sector_egovernment)
     {
-        //
+        $this->regency  = $regency;
+        $this->province = $province;
+        $this->sector_egovernment     = $sector_egovernment;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
-        if (request()->has('sort')) {
-            list($sortCol, $sortDir) = explode('|', request()->sort);
+        /* todo : return json */
 
-            $query = SectorEgovernment::orderBy($sortCol, $sortDir);
-        } else {
-            $query = SectorEgovernment::orderBy('id', 'asc');
-        }
+        return 'index';
 
-        if ($request->exists('filter')) {
-            $query->where(function($q) use($request) {
-                $value = "%{$request->filter}%";
-                $q->where('label', 'like', $value)
-                    ->orWhere('description', 'like', $value);
-            });
-        }
-
-        $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->paginate($perPage);
-
-        return response()->json($response)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $sector_egovernment = new SectorEgovernment;
 
-        $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
-
-        return response()->json($sector_egovernment);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\SectorEgovernment  $sector_egovernment
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $sector_egovernment = new SectorEgovernment;
-
-        $this->validate($request, [
-            'label' => 'required|max:16',
-            'description' => 'max:255',
+        return response()->json([
+            'provinces' => $this->province->all(),
+            'regencies' => $this->regency->all()
         ]);
-
-        $sector_egovernment->label = $request->get('label');
-        $sector_egovernment->description = $request->get('description');
-        $sector_egovernment->save();
-
-        $response['status'] = true;
-
-        return response()->json($response);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $sector_egovernment = SectorEgovernment::findOrFail($id);
 
-        $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $sector_egovernment = $this->sector_egovernment->find($id);
 
-        return response()->json($response);
+        return response()->json([
+            'negara'    => $sector_egovernment->negara,
+            'province'  => $sector_egovernment->getProvince->name,
+            'regencies' => $sector_egovernment->getRegency->name,
+            'tahun'     => $sector_egovernment->tahun,
+            'data'      => $sector_egovernment->data
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\SectorEgovernment  $sector_egovernment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function store(Request $request)
     {
-        $sector_egovernment = SectorEgovernment::findOrFail($id);
 
-        $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $validator = Validator::make($request->all(),[
+            'negara'        => 'required',
+            'province_id'   => 'required',
+            'regency_id'    => 'required',
+            'kab_kota'      => 'required',
+            'tahun'         => 'required|integer',
+            'data'          => 'required|integer',
+        ]);
 
-        return response()->json($response);
+        if($validator->fails())
+        {
+            return response()->json([
+                'title'     => 'error',
+                'message'   => 'add failed',
+                'type'      => 'failed',
+                'errors'    => $validator->errors()
+            ]);
+        }
+
+        $check = $this->sector_egovernment->where('regency_id',$request->regency_id)->where('tahun',$request->tahun)->count();
+
+        if($check > 0)
+        {
+            return response()->json([
+                'title'         => 'error',
+                'message'       => 'Data allready exist',
+                'type'          => 'failed',
+            ]);
+
+        }else{
+            $data = $this->sector_egovernment->create($request->all());
+
+            return response()->json([
+                    'type'      => 'success',
+                    'title'     => 'success',
+                    'id'      => $data->id,
+                    'message'   => 'PDRB '. $this->regency->find($request->regency_id)->name .' tahun '. $request->tahun .' successfully created',
+                ]);
+        }
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SectorEgovernment  $sector_egovernment
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $sector_egovernment = SectorEgovernment::findOrFail($id);
+        /* todo : return json */
+        return '';
 
-        if ($request->get('old_label') == $request->get('label'))
-        {
-            $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16',
-                'description' => 'max:255',
-            ]);
-
-        } else {
-            $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16|unique:sector_egovernments,label',
-                'description' => 'max:255',
-            ]);
-        }
-
-        if ($validator->fails()){
-            $response['message'] = 'Failed, label ' . $request->label . ' already exists';
-        } else {
-            $response['message'] = 'success';
-            $sector_egovernment->label = $request->get('label');
-            $sector_egovernment->description = $request->get('description');
-            $sector_egovernment->save();
-        }
-
-        $response['status'] = true;
-
-        return response()->json($response);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\SectorEgovernment  $sector_egovernment
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $sector_egovernment = SectorEgovernment::findOrFail($id);
+        /* todo : return json */
+        return '';
 
-        if ($sector_egovernment->delete()) {
-            $response['status'] = true;
-        } else {
-            $response['status'] = false;
-        }
-
-        return json_encode($response);
     }
 }

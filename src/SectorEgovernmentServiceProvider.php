@@ -36,7 +36,6 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
         $this->assetHandle();
         $this->migrationHandle();
         $this->publicHandle();
-        $this->seedHandle();
     }
 
     /**
@@ -166,14 +165,5 @@ class SectorEgovernmentServiceProvider extends ServiceProvider
         $this->publishes([
             $packagePublicPath => base_path('public')
         ], 'sector-egovernment-public');
-    }
-
-    public function seedHandle()
-    {
-        $packageSeedPath = __DIR__.'/database/seeds';
-
-        $this->publishes([
-            $packageSeedPath => base_path('database/seeds')
-        ], 'sector-egovernment-seeds');
     }
 }
