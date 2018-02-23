@@ -1,5 +1,14 @@
 # Sector E-Government
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/build-status/master)
+[![Latest Stable Version](https://poser.pugx.org/bantenprov/sector-egovernment/v/stable)](https://packagist.org/packages/bantenprov/sector-egovernment)
+[![Total Downloads](https://poser.pugx.org/bantenprov/sector-egovernment/downloads)](https://packagist.org/packages/bantenprov/sector-egovernment)
+[![Latest Unstable Version](https://poser.pugx.org/bantenprov/sector-egovernment/v/unstable)](https://packagist.org/packages/bantenprov/sector-egovernment)
+[![License](https://poser.pugx.org/bantenprov/sector-egovernment/license)](https://packagist.org/packages/bantenprov/sector-egovernment)
+[![Monthly Downloads](https://poser.pugx.org/bantenprov/sector-egovernment/d/monthly)](https://packagist.org/packages/bantenprov/sector-egovernment)
+[![Daily Downloads](https://poser.pugx.org/bantenprov/sector-egovernment/d/daily)](https://packagist.org/packages/bantenprov/sector-egovernment)
+
 10 Sectors in Indonsian's E-Government
 - Sektor Sarana dan Prasarana
 - Sektor Pemerintahan
