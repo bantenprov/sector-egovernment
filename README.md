@@ -54,12 +54,6 @@ $ git clone https://github.com/bantenprov/sector-egovernment.git
     Bantenprov\SectorEgovernment\SectorEgovernmentServiceProvider::class,
 ```
 
-#### Lakukan migrate :
-
-```bash
-$ php artisan migrate
-```
-
 #### Publish vendor :
 
 ```bash
@@ -72,6 +66,12 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
 
 ```bash
 $ composer dump-autoload
+```
+
+#### Lakukan migrate :
+
+```bash
+$ php artisan migrate
 ```
 
 #### Lakukan seeding :
