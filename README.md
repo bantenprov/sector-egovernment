@@ -1,4 +1,4 @@
-# Sector E-Government
+# Sector Egovernment
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/build-status/master)
@@ -9,7 +9,7 @@
 [![Monthly Downloads](https://poser.pugx.org/bantenprov/sector-egovernment/d/monthly)](https://packagist.org/packages/bantenprov/sector-egovernment)
 [![Daily Downloads](https://poser.pugx.org/bantenprov/sector-egovernment/d/daily)](https://packagist.org/packages/bantenprov/sector-egovernment)
 
-10 Sectors in Indonsian's E-Government
+10 Sectors in Indonsian's Egovernment
 - Sektor Sarana dan Prasarana
 - Sektor Pemerintahan
 - Sektor Pembangunan
@@ -129,7 +129,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Sector Government"
+                title: "Sector Egovernment"
             }
         },
         {
@@ -140,7 +140,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Add Sector Government"
+                title: "Add Sector Egovernment"
             }
         },
         {
@@ -151,7 +151,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "View Sector Government"
+                title: "View Sector Egovernment"
             }
         },
         {
@@ -162,7 +162,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Edit Sector Government"
+                title: "Edit Sector Egovernment"
             }
         },
         //== ...
