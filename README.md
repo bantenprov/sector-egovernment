@@ -47,14 +47,9 @@ $ git clone https://github.com/bantenprov/sector-egovernment.git
 'providers' => [
 
     /*
-    * Laravel Framework Service Providers...
-    */
-    Illuminate\Auth\AuthServiceProvider::class,
-    Illuminate\Broadcasting\BroadcastServiceProvider::class,
-    Illuminate\Bus\BusServiceProvider::class,
-    Illuminate\Cache\CacheServiceProvider::class,
-    Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-    Illuminate\Cookie\CookieServiceProvider::class,
+     * Package Service Providers...
+     */
+    Laravel\Tinker\TinkerServiceProvider::class,
     //....
     Bantenprov\SectorEgovernment\SectorEgovernmentServiceProvider::class,
 ```
