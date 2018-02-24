@@ -38,8 +38,8 @@ class SectorEgovernmentController extends Controller
      */
     public function index(Request $request)
     {
-        if (request()->has('sort')) {
-            list($sortCol, $sortDir) = explode('|', request()->sort);
+        if ($request->has('sort')) {
+            list($sortCol, $sortDir) = explode('|', $request->sort);
 
             $query = $this->sector_egovernment->orderBy($sortCol, $sortDir);
         } else {
@@ -54,7 +54,7 @@ class SectorEgovernmentController extends Controller
             });
         }
 
-        $perPage = request()->has('per_page') ? (int) request()->per_page : null;
+        $perPage = $request->has('per_page') ? (int) $request->per_page : null;
         $response = $query->paginate($perPage);
 
         return response()->json($response)
@@ -98,15 +98,15 @@ class SectorEgovernmentController extends Controller
             if ($check > 0) {
                 $response['message'] = 'Failed, label ' . $request->label . ' already exists';
             } else {
-                $sector_egovernment->label = $request->input('label');
-                $sector_egovernment->description = $request->input('description');
+                $sector_egovernment->label = $request->label;
+                $sector_egovernment->description = $request->description;
                 $sector_egovernment->save();
 
                 $response['message'] = 'success';
             }
         } else {
-            $sector_egovernment->label = $request->input('label');
-            $sector_egovernment->description = $request->input('description');
+            $sector_egovernment->label = $request->label;
+            $sector_egovernment->description = $request->description;
             $sector_egovernment->save();
 
             $response['message'] = 'success';
@@ -160,7 +160,7 @@ class SectorEgovernmentController extends Controller
     {
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
-        if ($request->input('old_label') == $request->input('label'))
+        if ($request->old_label == $request->label)
         {
             $validator = Validator::make($request->all(), [
                 'label' => 'required|max:16',
@@ -179,15 +179,15 @@ class SectorEgovernmentController extends Controller
             if ($check > 0) {
                 $response['message'] = 'Failed, label ' . $request->label . ' already exists';
             } else {
-                $sector_egovernment->label = $request->input('label');
-                $sector_egovernment->description = $request->input('description');
+                $sector_egovernment->label = $request->label;
+                $sector_egovernment->description = $request->description;
                 $sector_egovernment->save();
 
                 $response['message'] = 'success';
             }
         } else {
-            $sector_egovernment->label = $request->input('label');
-            $sector_egovernment->description = $request->input('description');
+            $sector_egovernment->label = $request->label;
+            $sector_egovernment->description = $request->description;
             $sector_egovernment->save();
 
             $response['message'] = 'success';
