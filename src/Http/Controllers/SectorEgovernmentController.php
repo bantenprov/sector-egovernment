@@ -70,11 +70,14 @@ class SectorEgovernmentController extends Controller
     public function create()
     {
         $sector_egovernment = $this->sector_egovernment;
+        $sector_egovernment->id = null;
+        $sector_egovernment->label = null;
+        $sector_egovernment->description = null;
 
         $response['sector_egovernment'] = $sector_egovernment;
         $response['status'] = true;
 
-        return response()->json($sector_egovernment);
+        return response()->json($response);
     }
 
     /**
