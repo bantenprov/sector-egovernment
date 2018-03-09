@@ -75,7 +75,7 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment->description = null;
 
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -115,7 +115,7 @@ class SectorEgovernmentController extends Controller
             $response['message'] = 'success';
         }
 
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -131,7 +131,7 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -147,7 +147,7 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -196,7 +196,7 @@ class SectorEgovernmentController extends Controller
             $response['message'] = 'success';
         }
 
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -212,9 +212,9 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         if ($sector_egovernment->delete()) {
-            $response['status'] = true;
+            $response['loaded'] = true;
         } else {
-            $response['status'] = false;
+            $response['loaded'] = false;
         }
 
         return json_encode($response);
