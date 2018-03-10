@@ -153,7 +153,7 @@ class SectorEgovernmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $sector_egovernment = $this->sector_egovernment;
+        $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         $validator = Validator::make($request->all(), [
             'label'         => 'required|max:16|unique:sector_egovernments,label,'.$id.',id,deleted_at,NULL',
