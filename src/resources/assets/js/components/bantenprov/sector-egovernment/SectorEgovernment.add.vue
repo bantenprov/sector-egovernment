@@ -63,10 +63,10 @@ export default {
   data() {
     return {
       state: {},
-      title : "Add Sector Egovernment",
+      title: "Add Sector Egovernment",
       model: {
-        label: "",
-        description: ""
+        label       : "",
+        description : ""
       }
     }
   },
@@ -74,8 +74,8 @@ export default {
     axios.get('api/sector-egovernment/create')
       .then(response => {
         if (response.data.loaded == true) {
-          this.model.label = response.data.sector_egovernment.label;
-          this.model.description = response.data.sector_egovernment.description;
+          this.model.label        = response.data.sector_egovernment.label;
+          this.model.description  = response.data.sector_egovernment.description;
         } else {
           alert('Failed');
         }
@@ -93,8 +93,8 @@ export default {
         return;
       } else {
         axios.post('api/sector-egovernment', {
-            label: this.model.label,
-            description: this.model.description
+            label       : this.model.label,
+            description : this.model.description
           })
           .then(response => {
             if (response.data.loaded == true) {
@@ -114,10 +114,19 @@ export default {
       }
     },
     reset() {
-      this.model = {
-        label: "",
-        description: ""
-      };
+      axios.get('api/sector-egovernment/create')
+        .then(response => {
+          if (response.data.loaded == true) {
+            this.model.label        = response.data.sector_egovernment.label;
+            this.model.description  = response.data.sector_egovernment.description;
+          } else {
+            alert('Failed');
+          }
+        })
+        .catch(function(response) {
+          alert('Break');
+          window.location.href = '#/admin/sector-egovernment';
+        });
     },
     back() {
       window.location = '#/admin/sector-egovernment';
