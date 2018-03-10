@@ -98,18 +98,18 @@ export default {
           })
           .then(response => {
             if (response.data.loaded == true) {
-              if(response.data.message == 'success'){
+              if(response.data.error == false){
                 alert(response.data.message);
                 app.back();
               }else{
                 alert(response.data.message);
               }
             } else {
-              alert(response.data.message);
+              alert('Failed');
             }
           })
           .catch(function(response) {
-            alert('Break ' + response.data.message);
+            alert('Break');
           });
       }
     },

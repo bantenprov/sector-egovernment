@@ -69,10 +69,10 @@ class SectorEgovernmentController extends Controller
      */
     public function create()
     {
-        $sector_egovernment = $this->sector_egovernment;
-        $sector_egovernment->id = null;
-        $sector_egovernment->label = null;
-        $sector_egovernment->description = null;
+        $sector_egovernment                 = $this->sector_egovernment;
+        $sector_egovernment->id             = null;
+        $sector_egovernment->label          = null;
+        $sector_egovernment->description    = null;
 
         $response['sector_egovernment'] = $sector_egovernment;
         $response['loaded'] = true;
@@ -91,28 +91,20 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment;
 
         $validator = Validator::make($request->all(), [
-            'label' => 'required|max:16|unique:sector_egovernments,label',
-            'description' => 'max:255',
+            'label'         => 'required|max:16|unique:sector_egovernments,label',
+            'description'   => 'required|max:255',
         ]);
 
         if($validator->fails()){
-            $check = $sector_egovernment->where('label',$request->label)->whereNull('deleted_at')->count();
-
-            if ($check > 0) {
-                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
-            } else {
-                $sector_egovernment->label = $request->label;
-                $sector_egovernment->description = $request->description;
-                $sector_egovernment->save();
-
-                $response['message'] = 'success';
-            }
+            $response['error'] = true;
+            $response['message'] = $validator->errors()->first();
         } else {
-            $sector_egovernment->label = $request->label;
-            $sector_egovernment->description = $request->description;
+            $sector_egovernment->label          = $request->label;
+            $sector_egovernment->description    = $request->description;
             $sector_egovernment->save();
 
-            $response['message'] = 'success';
+            $response['error'] = false;
+            $response['message'] = 'Success';
         }
 
         $response['loaded'] = true;
@@ -161,39 +153,23 @@ class SectorEgovernmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $sector_egovernment = $this->sector_egovernment->findOrFail($id);
+        $sector_egovernment = $this->sector_egovernment;
 
-        if ($request->old_label == $request->label)
-        {
-            $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16',
-                'description' => 'max:255',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'label'         => 'required|max:16|unique:sector_egovernments,label,'.$id,
+            'description'   => 'required|max:255',
+        ]);
+
+        if($validator->fails()){
+            $response['error'] = true;
+            $response['message'] = $validator->errors()->first();
         } else {
-            $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16|unique:sector_egovernments,label',
-                'description' => 'max:255',
-            ]);
-        }
-
-        if ($validator->fails()) {
-            $check = $sector_egovernment->where('label',$request->label)->whereNull('deleted_at')->count();
-
-            if ($check > 0) {
-                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
-            } else {
-                $sector_egovernment->label = $request->label;
-                $sector_egovernment->description = $request->description;
-                $sector_egovernment->save();
-
-                $response['message'] = 'success';
-            }
-        } else {
-            $sector_egovernment->label = $request->label;
-            $sector_egovernment->description = $request->description;
+            $sector_egovernment->label          = $request->label;
+            $sector_egovernment->description    = $request->description;
             $sector_egovernment->save();
 
-            $response['message'] = 'success';
+            $response['error'] = false;
+            $response['message'] = 'Success';
         }
 
         $response['loaded'] = true;
