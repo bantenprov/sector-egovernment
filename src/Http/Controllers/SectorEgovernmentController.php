@@ -91,7 +91,7 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment;
 
         $validator = Validator::make($request->all(), [
-            'label'         => 'required|max:16|unique:sector_egovernments,label',
+            'label'         => 'required|max:16|unique:sector_egovernments,label,NULL,id,deleted_at,NULL',
             'description'   => 'required|max:255',
         ]);
 
