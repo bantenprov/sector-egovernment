@@ -5,7 +5,7 @@ namespace Bantenprov\SectorEgovernment\Http\Controllers;
 /* Require */
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Bantenprov\BudgetAbsorption\Facades\SectorEgovernmentFacade;
+use Bantenprov\SectorEgovernment\Facades\SectorEgovernmentFacade;
 
 /* Models */
 use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
@@ -38,8 +38,8 @@ class SectorEgovernmentController extends Controller
      */
     public function index(Request $request)
     {
-        if (request()->has('sort')) {
-            list($sortCol, $sortDir) = explode('|', request()->sort);
+        if ($request->has('sort')) {
+            list($sortCol, $sortDir) = explode('|', $request->sort);
 
             $query = $this->sector_egovernment->orderBy($sortCol, $sortDir);
         } else {
@@ -54,7 +54,7 @@ class SectorEgovernmentController extends Controller
             });
         }
 
-        $perPage = request()->has('per_page') ? (int) request()->per_page : null;
+        $perPage = $request->has('per_page') ? (int) $request->per_page : null;
         $response = $query->paginate($perPage);
 
         return response()->json($response)
@@ -69,12 +69,15 @@ class SectorEgovernmentController extends Controller
      */
     public function create()
     {
-        $sector_egovernment = $this->sector_egovernment;
+        $sector_egovernment                 = $this->sector_egovernment;
+        $sector_egovernment->id             = null;
+        $sector_egovernment->label          = null;
+        $sector_egovernment->description    = null;
 
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $response['loaded'] = true;
 
-        return response()->json($sector_egovernment);
+        return response()->json($response);
     }
 
     /**
@@ -88,31 +91,23 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment;
 
         $validator = Validator::make($request->all(), [
-            'label' => 'required|max:16|unique:sector_egovernments,label',
-            'description' => 'max:255',
+            'label'         => 'required|max:16|unique:sector_egovernments,label,NULL,id,deleted_at,NULL',
+            'description'   => 'required|max:255',
         ]);
 
         if($validator->fails()){
-            $check = $sector_egovernment->where('label',$request->label)->whereNull('deleted_at')->count();
-
-            if ($check > 0) {
-                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
-            } else {
-                $sector_egovernment->label = $request->input('label');
-                $sector_egovernment->description = $request->input('description');
-                $sector_egovernment->save();
-
-                $response['message'] = 'success';
-            }
+            $response['error'] = true;
+            $response['message'] = $validator->errors()->first();
         } else {
-            $sector_egovernment->label = $request->input('label');
-            $sector_egovernment->description = $request->input('description');
+            $sector_egovernment->label          = $request->label;
+            $sector_egovernment->description    = $request->description;
             $sector_egovernment->save();
 
-            $response['message'] = 'success';
+            $response['error'] = false;
+            $response['message'] = 'Success';
         }
 
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -128,7 +123,7 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -144,7 +139,7 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -160,40 +155,24 @@ class SectorEgovernmentController extends Controller
     {
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
-        if ($request->input('old_label') == $request->input('label'))
-        {
-            $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16',
-                'description' => 'max:255',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'label'         => 'required|max:16|unique:sector_egovernments,label,'.$id.',id,deleted_at,NULL',
+            'description'   => 'required|max:255',
+        ]);
+
+        if($validator->fails()){
+            $response['error'] = true;
+            $response['message'] = $validator->errors()->first();
         } else {
-            $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16|unique:sector_egovernments,label',
-                'description' => 'max:255',
-            ]);
-        }
-
-        if ($validator->fails()) {
-            $check = $sector_egovernment->where('label',$request->label)->whereNull('deleted_at')->count();
-
-            if ($check > 0) {
-                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
-            } else {
-                $sector_egovernment->label = $request->input('label');
-                $sector_egovernment->description = $request->input('description');
-                $sector_egovernment->save();
-
-                $response['message'] = 'success';
-            }
-        } else {
-            $sector_egovernment->label = $request->input('label');
-            $sector_egovernment->description = $request->input('description');
+            $sector_egovernment->label          = $request->label;
+            $sector_egovernment->description    = $request->description;
             $sector_egovernment->save();
 
-            $response['message'] = 'success';
+            $response['error'] = false;
+            $response['message'] = 'Success';
         }
 
-        $response['status'] = true;
+        $response['loaded'] = true;
 
         return response()->json($response);
     }
@@ -209,9 +188,9 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         if ($sector_egovernment->delete()) {
-            $response['status'] = true;
+            $response['loaded'] = true;
         } else {
-            $response['status'] = false;
+            $response['loaded'] = false;
         }
 
         return json_encode($response);

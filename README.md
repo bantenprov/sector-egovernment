@@ -1,5 +1,6 @@
-# Sector E-Government
+# Sector Egovernment
 
+[![Join the chat at https://gitter.im/sector-egovernment/Lobby](https://badges.gitter.im/sector-egovernment/Lobby.svg)](https://gitter.im/sector-egovernment/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bantenprov/sector-egovernment/build-status/master)
 [![Latest Stable Version](https://poser.pugx.org/bantenprov/sector-egovernment/v/stable)](https://packagist.org/packages/bantenprov/sector-egovernment)
@@ -9,7 +10,7 @@
 [![Monthly Downloads](https://poser.pugx.org/bantenprov/sector-egovernment/d/monthly)](https://packagist.org/packages/bantenprov/sector-egovernment)
 [![Daily Downloads](https://poser.pugx.org/bantenprov/sector-egovernment/d/daily)](https://packagist.org/packages/bantenprov/sector-egovernment)
 
-10 Sectors in Indonsian's E-Government
+10 Sectors in Indonsian's Egovernment
 - Sektor Sarana dan Prasarana
 - Sektor Pemerintahan
 - Sektor Pembangunan
@@ -47,28 +48,19 @@ $ git clone https://github.com/bantenprov/sector-egovernment.git
 'providers' => [
 
     /*
-    * Laravel Framework Service Providers...
-    */
-    Illuminate\Auth\AuthServiceProvider::class,
-    Illuminate\Broadcasting\BroadcastServiceProvider::class,
-    Illuminate\Bus\BusServiceProvider::class,
-    Illuminate\Cache\CacheServiceProvider::class,
-    Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-    Illuminate\Cookie\CookieServiceProvider::class,
+     * Package Service Providers...
+     */
+    Laravel\Tinker\TinkerServiceProvider::class,
     //....
     Bantenprov\SectorEgovernment\SectorEgovernmentServiceProvider::class,
 ```
 
-#### Lakukan migrate :
-
-```bash
-$ php artisan migrate
-```
-
-#### Publish database seeder :
+#### Publish vendor :
 
 ```bash
 $ php artisan vendor:publish --tag=sector-egovernment-seeds
+$ php artisan vendor:publish --tag=sector-egovernment-assets
+$ php artisan vendor:publish --tag=sector-egovernment-public
 ```
 
 #### Lakukan auto dump :
@@ -77,18 +69,18 @@ $ php artisan vendor:publish --tag=sector-egovernment-seeds
 $ composer dump-autoload
 ```
 
+#### Lakukan migrate :
+
+```bash
+$ php artisan migrate
+```
+
 #### Lakukan seeding :
 
 ```bash
 $ php artisan db:seed --class=BantenprovSectorEgovernmentSeeder
 ```
 
-#### Lakukan publish component vue :
-
-```bash
-$ php artisan vendor:publish --tag=sector-egovernment-assets
-$ php artisan vendor:publish --tag=sector-egovernment-public
-```
 #### Tambahkan route di dalam file : `resources/assets/js/routes.js` :
 
 ```javascript
@@ -129,7 +121,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Sector Government"
+                title: "Sector Egovernment"
             }
         },
         {
@@ -140,7 +132,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Add Sector Government"
+                title: "Add Sector Egovernment"
             }
         },
         {
@@ -151,7 +143,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "View Sector Government"
+                title: "View Sector Egovernment"
             }
         },
         {
@@ -162,7 +154,7 @@ $ php artisan vendor:publish --tag=sector-egovernment-public
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Edit Sector Government"
+                title: "Edit Sector Egovernment"
             }
         },
         //== ...
