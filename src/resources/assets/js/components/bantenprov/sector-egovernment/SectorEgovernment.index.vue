@@ -82,7 +82,7 @@ export default {
   },
   data() {
     return {
-      title : "Sector Egovernment",
+      title: 'Sector Egovernment',
       loading: true,
       fields: [
         {
