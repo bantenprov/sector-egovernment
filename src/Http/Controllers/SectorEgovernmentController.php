@@ -5,7 +5,7 @@ namespace Bantenprov\SectorEgovernment\Http\Controllers;
 /* Require */
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Bantenprov\BudgetAbsorption\Facades\SectorEgovernmentFacade;
+use Bantenprov\SectorEgovernment\Facades\SectorEgovernmentFacade;
 
 /* Models */
 use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
