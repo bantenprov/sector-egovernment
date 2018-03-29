@@ -84,6 +84,41 @@ $ php artisan db:seed --class=BantenprovSectorEgovernmentSeeder
 #### Tambahkan route di dalam file : `resources/assets/js/routes.js` :
 
 ```javascript
+function layout(name) {
+  return function(resolve) {
+    require(['./layouts/' + name + '.vue'], resolve);
+  }
+}
+
+let routes = [
+{
+    path: '/',
+    name: 'home',
+    component: resolve => require(['./components/views/Home.vue'], resolve),
+  },
+ //==...   
+  {
+    path: '/sector-egovernment/:id',
+    name: 'home',
+    component: resolve => require(['./components/bantenprov/sector-egovernment/SectorEgovernment.show.vue'], resolve),
+    meta: {
+        title: "View Sector Egovernment"
+    }
+  },
+
+  //==..
+  {
+    path: '/sign-in',
+    name: 'sign-in',
+    component: resolve => require(['./components/views/SignIn.vue'], resolve),
+    meta: {
+      title: "Sign in"
+    }
+  },
+```
+
+
+```javascript
 {
     path: '/dashboard',
     redirect: '/dashboard/home',
