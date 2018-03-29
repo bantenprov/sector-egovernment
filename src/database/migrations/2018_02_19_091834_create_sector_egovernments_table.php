@@ -14,8 +14,10 @@ class CreateSectorEgovernmentsTable extends Migration
 	{
 		Schema::create('sector_egovernments', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('label', 255);
-			$table->string('description', 255)->nullable();
+			$table->string('label');
+			$table->string('description')->nullable();
+			$table->integer('user_id');
+			$table->string('link');
 			$table->timestamps();
 			$table->softDeletes();
 		});

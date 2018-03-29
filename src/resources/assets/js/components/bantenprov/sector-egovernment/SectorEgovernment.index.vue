@@ -38,9 +38,9 @@
           @vuetable:loaded="onLoaded">
           <template slot="actions" slot-scope="props">
             <div class="btn-sector pull-right" role="sector" style="display:flex;">
-              <!--<button class="btn btn-info btn-sm" role="button" @click="viewRow(props.rowData)">
+              <button class="btn btn-info btn-sm" role="button" @click="viewRow(props.rowData)">
                 <span class="fa fa-eye"></span>
-              </button>-->
+              </button>
               <button class="btn btn-warning btn-sm" role="button" @click="editRow(props.rowData)">
                 <span class="fa fa-pencil"></span>
               </button>
@@ -104,6 +104,19 @@ export default {
           titleClass: 'center aligned'
         },
         {
+          name: 'user.name',
+          title: 'Username',
+          sortField: 'user_id',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'link',
+          title: 'Link',
+          sortField: 'link',
+          titleClass: 'center aligned',
+          callback:'url_to'
+        },
+        {
           name: '__slot:actions',
           title: 'Actions',
           titleClass: 'center aligned',
@@ -138,11 +151,16 @@ export default {
     }
   },
   methods: {
+
+    url_to(value){ 
+      return "<a href='"+value+"' target='_blank'>"+value+"</a>" 
+    },
+
     createRow() {
       window.location = '#/admin/sector-egovernment/create';
     },
     viewRow(rowData) {
-      window.location = '#/admin/sector-egovernment/' + rowData.id;
+      window.location = '#/sector-egovernment/' + rowData.id;
     },
     editRow(rowData) {
       window.location = '#/admin/sector-egovernment/' + rowData.id + '/edit';

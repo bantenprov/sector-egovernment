@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i> {{ title }}
+      <i class="fa fa-table" aria-hidden="true"></i> Edit Sector Egovernment
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -13,33 +13,64 @@
     </div>
 
     <div class="card-body">
-      <vue-form :state="state" @submit.prevent="onSubmit">
+      <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
+        <div class="form-row">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.label" required autofocus name="label" type="text" placeholder="Label">
 
-        <validate tag="div">
-          <div class="form-group">
-            <label for="model-label">Label</label>
-            <input type="text" class="form-control" id="model-label" v-model="model.label" name="label" placeholder="Label" required autofocus>
-            <field-messages name="label" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
-            </field-messages>
+              <field-messages name="label" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Label is a required field</small>
+              </field-messages>
+            </validate>
           </div>
-        </validate>
+        </div>
 
-        <validate tag="div">
-          <div class="form-group">
-            <label for="model-description">Description</label>
-            <input type="text" class="form-control" id="model-description" v-model="model.description" name="description" placeholder="Description" required>
-            <field-messages name="description" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">This field is a required field</small>
-            </field-messages>
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.description" name="description" type="text" placeholder="Description">
+
+              <field-messages name="description" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
           </div>
-        </validate>
+        </div>
 
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.link" name="link" type="text" placeholder="Link">
+
+              <field-messages name="link" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
+
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">username is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+          </div>
         </div>
 
       </vue-form>
@@ -49,22 +80,14 @@
 
 <script>
 export default {
-  data() {
-    return {
-      state: {},
-      title: 'Edit Sector Egovernment',
-      model: {
-        label       : '',
-        description : ''
-      }
-    }
-  },
   mounted() {
     axios.get('api/sector-egovernment/' + this.$route.params.id + '/edit')
       .then(response => {
-        if (response.data.loaded == true) {
-          this.model.label        = response.data.sector_egovernment.label;
-          this.model.description  = response.data.sector_egovernment.description;
+        if (response.data.status == true) {
+          this.model.user               = response.data.user,
+          this.model.label              = response.data.sector_egovernment.label;
+          this.model.description        = response.data.sector_egovernment.description;
+          this.model.link               = response.data.sector_egovernment.link;
         } else {
           alert('Failed');
         }
@@ -72,7 +95,30 @@ export default {
       .catch(function(response) {
         alert('Break');
         window.location.href = '#/admin/sector-egovernment';
-      });
+      }),
+
+      axios.get('api/sector-egovernment/create')
+      .then(response => {
+
+          response.data.user.forEach(user_element => {
+            this.user.push(user_element);
+          });
+      })
+      .catch(function(response) {
+        alert('Break');
+      })
+  },
+  data() {
+    return {
+      state: {},
+      model: {
+        label: "",
+        user: "",
+        description: "",
+        link: "",
+      },
+      user: []
+    }
   },
   methods: {
     onSubmit: function() {
@@ -82,32 +128,36 @@ export default {
         return;
       } else {
         axios.put('api/sector-egovernment/' + this.$route.params.id, {
-            label       : this.model.label,
-            description : this.model.description
+            label:                  this.model.label,
+            description:            this.model.description,
+            old_label:              this.model.old_label,
+            user_id:                this.model.user.id,
+            link:                   this.model.link
           })
           .then(response => {
-            if (response.data.loaded == true) {
-              if(response.data.error == false){
+            if (response.data.status == true) {
+              if(response.data.message == 'success'){
                 alert(response.data.message);
                 app.back();
               }else{
                 alert(response.data.message);
               }
             } else {
-              alert('Failed');
+              alert(response.data.message);
             }
           })
           .catch(function(response) {
-            alert('Break');
+            alert('Break ' + response.data.message);
           });
       }
     },
     reset() {
       axios.get('api/sector-egovernment/' + this.$route.params.id + '/edit')
         .then(response => {
-          if (response.data.loaded == true) {
-            this.model.label        = response.data.sector_egovernment.label;
-            this.model.description  = response.data.sector_egovernment.description;
+          if (response.data.status == true) {
+            this.model.label = response.data.sector_egovernment.label;
+            this.model.description = response.data.sector_egovernment.description;
+            this.model.link = response.data.sector_egovernment.link;
           } else {
             alert('Failed');
           }

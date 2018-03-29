@@ -18,5 +18,11 @@ class SectorEgovernment extends Model
     protected $fillable = [
         'label',
         'description',
+        'user_id',
+        'link',
     ];
+    public function user()
+    {
+        return $this->belongsTo('App\User','user_id');
+    }
 }

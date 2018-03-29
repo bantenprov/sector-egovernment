@@ -9,6 +9,7 @@ use Bantenprov\SectorEgovernment\Facades\SectorEgovernmentFacade;
 
 /* Models */
 use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
+use App\User;
 
 /* Etc */
 use Validator;
@@ -19,6 +20,7 @@ use Validator;
  * @package Bantenprov\SectorEgovernment
  * @author  bantenprov <developer.bantenprov@gmail.com>
  */
+
 class SectorEgovernmentController extends Controller
 {
     /**
@@ -26,9 +28,14 @@ class SectorEgovernmentController extends Controller
      *
      * @return void
      */
-    public function __construct(SectorEgovernment $sector_egovernment)
+
+    protected  $user;
+    protected  $sector_egovernment;
+
+    public function __construct(SectorEgovernment $sector_egovernment, User $user)
     {
-        $this->sector_egovernment = $sector_egovernment;
+        $this->sector_egovernment   = $sector_egovernment;
+        $this->user                 = $user;
     }
 
     /**
@@ -55,7 +62,7 @@ class SectorEgovernmentController extends Controller
         }
 
         $perPage = $request->has('per_page') ? (int) $request->per_page : null;
-        $response = $query->paginate($perPage);
+        $response = $query->with('user')->paginate($perPage);
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -69,13 +76,14 @@ class SectorEgovernmentController extends Controller
      */
     public function create()
     {
-        $sector_egovernment                 = $this->sector_egovernment;
-        $sector_egovernment->id             = null;
-        $sector_egovernment->label          = null;
-        $sector_egovernment->description    = null;
+        $users = $this->user->all();
 
-        $response['sector_egovernment'] = $sector_egovernment;
-        $response['loaded'] = true;
+        foreach($users as $user){
+            array_set($user, 'label', $user->name);
+        }
+
+        $response['user'] = $users;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -91,23 +99,36 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment;
 
         $validator = Validator::make($request->all(), [
-            'label'         => 'required|max:16|unique:sector_egovernments,label,NULL,id,deleted_at,NULL',
-            'description'   => 'required|max:255',
+            'user_id'                   => 'required',
+            'label'                     => 'required',
+            'description'               => 'required',
+            'link'                      => 'required',
         ]);
 
         if($validator->fails()){
-            $response['error'] = true;
-            $response['message'] = $validator->errors()->first();
-        } else {
-            $sector_egovernment->label          = $request->label;
-            $sector_egovernment->description    = $request->description;
-            $sector_egovernment->save();
+            $check = $sector_egovernment->where('label',$request->label)->whereNull('deleted_at')->count();
 
-            $response['error'] = false;
-            $response['message'] = 'Success';
+            if ($check > 0) {
+                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
+            } else {
+                $sector_egovernment->user_id        = $request->input('user_id');
+                $sector_egovernment->label          = $request->input('label');
+                $sector_egovernment->description    = $request->input('description');
+                $sector_egovernment->link           = $request->input('link');
+                $sector_egovernment->save();
+
+                $response['message'] = 'success';
+            }
+        } else {
+            $sector_egovernment->user_id        = $request->input('user_id');
+            $sector_egovernment->label          = $request->input('label');
+            $sector_egovernment->description    = $request->input('description');
+            $sector_egovernment->link           = $request->input('link');
+            $sector_egovernment->save();
+            $response['message'] = 'success';
         }
 
-        $response['loaded'] = true;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -123,7 +144,8 @@ class SectorEgovernmentController extends Controller
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['loaded'] = true;
+        $response['user'] = $sector_egovernment->user;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -138,8 +160,11 @@ class SectorEgovernmentController extends Controller
     {
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
 
+        array_set($sector_egovernment->user, 'label', $sector_egovernment->user->name);
+
         $response['sector_egovernment'] = $sector_egovernment;
-        $response['loaded'] = true;
+        $response['user']               = $sector_egovernment->user;
+        $response['status'] = true;
 
         return response()->json($response);
     }
@@ -153,29 +178,42 @@ class SectorEgovernmentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $response = array();
+        $message  = array();
+
         $sector_egovernment = $this->sector_egovernment->findOrFail($id);
+        {
+            $validator = Validator::make($request->all(), [
+                'label'                 => 'required',
+                'description'           => 'required',
+                'user_id'               => 'required',
+                'link'                  => 'required',
+            ]);
 
-        $validator = Validator::make($request->all(), [
-            'label'         => 'required|max:16|unique:sector_egovernments,label,'.$id.',id,deleted_at,NULL',
-            'description'   => 'required|max:255',
-        ]);
+             if($validator->fails()){
 
-        if($validator->fails()){
-            $response['error'] = true;
-            $response['message'] = $validator->errors()->first();
-        } else {
-            $sector_egovernment->label          = $request->label;
-            $sector_egovernment->description    = $request->description;
-            $sector_egovernment->save();
+                foreach($validator->messages()->getMessages() as $key => $error){
+                    foreach($error AS $error_get) {
+                        array_push($message, $error_get. "\n");
+                    }                
+                } 
+                $response['message'] = $message;
 
-            $response['error'] = false;
-            $response['message'] = 'Success';
-        }
+            } else {
+                $sector_egovernment->label                    = $request->input('label');
+                $sector_egovernment->description              = $request->input('description');
+                $sector_egovernment->link                     = $request->input('link');
+                $sector_egovernment->user_id                  = $request->input('user_id');
+                $sector_egovernment->save();
 
-        $response['loaded'] = true;
+                $response['message'] = 'success';
+            }
+
+        $response['status'] = true;
 
         return response()->json($response);
     }
+}
 
     /**
      * Remove the specified resource from storage.
