@@ -247,6 +247,9 @@ Vue.component('echarts-sector-egovernment-tahun', SectorEgovernmentTahun);
 import SectorEgovernmentAdminShow from './components/bantenprov/sector-egovernment/SectorEgovernmentAdmin.show.vue';
 Vue.component('admin-view-sector-egovernment-tahun', SectorEgovernmentAdminShow);
 
+import SectorEgovernmentList from './components/bantenprov/sector-egovernment/partials/SectorEgovernmentList.vue';
+Vue.component('sector-egovernment-list', SectorEgovernmentList);
+
 //== Echarts Angka Partisipasi Kasar
 
 import SectorEgovernmentBar01 from './components/views/bantenprov/sector-egovernment/SectorEgovernmentBar01.vue';
